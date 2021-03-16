@@ -22,6 +22,7 @@ def logoutView(request):
     return redirect('login')
 
 def registerView(request):
+
     ref_code = request.GET.get('ref_code',None)
     form = Register_Form(initial={'referal_code':ref_code})
     if request.method == 'POST':
@@ -46,6 +47,8 @@ def registerView(request):
                                      position=request.POST.get('position'),
                                      referal_code = new_ref_code,
                                      )
+
+            messages.success(request,"Registration Successfully, Please login")
             return redirect('login')
 
     context = {
