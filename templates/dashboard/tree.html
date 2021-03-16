@@ -1,0 +1,264 @@
+{% extends "dashboard/snippets/base.html" %}
+{% load static%}
+{% block  style %}
+<link rel="stylesheet" href="{% static 'dashboard/css/css/newstyle.css' %}"/>
+<link rel="stylesheet" href="{% static 'dashboard/css/css/main.css' %}"/>
+<link rel="stylesheet" href="{% static 'dashboard/css/css/pace.min.css' %}"/>
+<link rel="stylesheet" href="{% static 'assets/css/util.css' %}"/>
+
+<link rel="stylesheet" href="{% static 'assets/fonts/iconic/css/material-design-iconic-font.min.css' %}"/>
+<!--===============================================================================================-->
+<link rel="stylesheet" href="{% static 'assets/vendor/animate/animate.css' %}"/>
+<!--===============================================================================================-->
+<link rel="stylesheet" href="{% static 'assets/vendor/css-hamburgers/hamburgers.min.css' %}"/>
+<!--===============================================================================================-->
+<link rel="stylesheet" href="{% static 'assets/vendor/animsition/css/animsition.min.css' %}"/>
+<!--===============================================================================================-->
+<link rel="stylesheet" href="{% static 'assets/vendor/select2/select2.min.css' %}"
+/>
+<link rel="stylesheet" href="{% static 'assets/css/main.css' %}"/>
+<link rel="stylesheet" href="{% static 'assets/vendor/select2/select2.min.css' %}"/>
+<!-- Custom fonts for this template-->
+<link
+        href="{% static 'dashboard/vendor/fontawesome-free/css/all.min.css' %}"
+        rel="stylesheet"
+        type="text/css"
+/>
+<link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet"
+/>
+
+<!-- Custom styles for this template-->
+<link href="{% static 'dashboard/css/sb-admin-2.min.css' %}" rel="stylesheet"/>
+{% endblock style %}
+{% block  title %}
+    <title>Richfams - Tree</title>
+{% endblock title %}
+
+{% block  content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-2">
+            <a href="{% url 'tree' user_id=1level %}" class="btn btn-primary">Up 1 Level</a>
+        </div>
+        <div class="col-2">
+            <a href="{% url 'tree' user_id=self %}" class="btn btn-primary">Self</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-wrapper" style="margin-top: 230px;">
+                <div class="tree" style="margin-bottom : 400px ;margin-top: -12rem !important;">
+                    <ul>
+                        <li id="node-0">
+                            {{tree.node0|safe}}
+                            <ul>
+                                <li id="node-1">
+                                    {{tree.node1|safe}}
+                                    <ul>
+                                        <li id="node-3">
+                                            {{tree.node3|safe}}
+                                        </li>
+
+                                        <li id="node-4">
+                                            {{tree.node4|safe}}
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li id="node-2">
+                                    {{tree.node2|safe}}
+                                    <ul>
+                                        <li id="node-5">
+                                            {{tree.node5|safe}}
+                                        </li>
+
+                                        <li id="node-6">
+                                            {{tree.node6|safe}}
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                    </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block  modal %}
+	<div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="register"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title">Register Member</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30" style="width:100%">
+                    <form class="login100-form validate-form" method="post" id="regis-form">
+                        {% csrf_token %}
+                        <span class="login100-form-title p-b-37"> Rich Farm </span>
+
+                        <div
+                                class="wrap-input100 validate-input m-b-20"
+                                data-validate="Masukan Nama "
+                        >
+                            <input type="text" name="name" class="input100" placeholder="Nama" required
+                                   id="id_name">
+                            <span class="focus-input100"></span>
+                        </div>
+
+                        <div
+                                class="wrap-input100 validate-input m-b-20"
+                                data-validate="Masukan Username "
+                        >
+                            <input type="text" name="username" class="input100" placeholder="Username" required
+                                   id="id_username" onKeyDown="if(event.keyCode === 32) return false;">
+                            <span class="focus-input100"></span>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-1"></div>
+                            <div class="col-5">
+                                <input class="" type="radio" name="position" id="pos-kiri"
+                                       value="1" required disabled>
+                                <label class="" for="pos-kiri"><b>KIRI</b></label>
+                            </div>
+                            <div class="col-3"></div>
+                            <div class="col-3">
+                                <input class="" type="radio" name="position" id="pos-kanan"
+                                       value="0" required disabled>
+                                <label class="" for="pos-kanan"><b>KANAN</b></label>
+                            </div>
+
+                        </div>
+
+
+                        <div
+                                class="wrap-input100 validate-input m-b-20"
+                                data-validate="Masukan Email "
+                        >
+                            <input type="email" name="email" class="input100" placeholder="Email" required
+                                   id="id_email" onKeyDown="if(event.keyCode === 32) return false;">
+                            <span class="focus-input100"></span>
+                        </div>
+
+                        <div
+                                class="wrap-input100 validate-input m-b-25"
+                                data-validate="Masukan password"
+                        >
+                            <input type="password" name="password1" class="input100" placeholder="Password" required
+                                   id="id_password1" onKeyDown="if(event.keyCode === 32) return false;">
+                            <span class="focus-input100"></span>
+                        </div>
+
+                        <div
+                                class="wrap-input100 validate-input m-b-25"
+                                data-validate="Masukan Confirm Password"
+                        >
+                            <input type="password" name="password2" class="input100" placeholder="Ulangi Password"
+                                   required id="id_password2" onKeyDown="if(event.keyCode === 32) return false;">
+                            <span class="focus-input100"></span>
+                        </div>
+                        <input type="hidden" name="parent_id" id="parent_id">
+                        <input type="hidden" name="position" id="position">
+                        <button type="button" id="btn-regis" class="btn btn-success">Submit</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock modal %}
+
+{% block  script %}
+	<script src="{% static 'dashboard/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'dashboard/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'dashboard/js/sb-admin-2.min.js' %}"></script>
+
+<!-- Page level plugins -->
+<script src="{% static 'dashboard/vendor/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'assets/vendor/animsition/js/animsition.min.js' %}"></script>
+<script src="{% static 'assets/vendor/select2/select2.min.js' %}"></script>
+<script src="{% static 'assets/vendor/countdowntime/countdowntime.js' %}"></script>
+
+
+<!-- Page level custom scripts -->
+<script src="{% static 'assets/js/main.js' %}"></script>
+<script src="{% static 'sweetalert.min.js' %}"></script>
+
+<script>
+var base_url = window.location.origin
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+$(".node").click(function(){
+    var position = $(this).attr("data-position")
+    var parent = $(this).attr("data-parent")
+    $("#parent_id").val(parent)
+    $("#position").val(position)
+    $("#regis-form").trigger("reset")
+    if (position == '0'){
+        $("#pos-kanan").prop("checked",true)
+    }
+    else if (position == '1'){
+        $("#pos-kiri").prop("checked",true)
+    }
+
+    $("#register").modal()
+
+    $("#btn-regis").click(function(){
+        var df = $("#regis-form").serialize()
+        $.ajax({
+            type: "POST",
+            url: base_url + "/dashboard/register/tree/",
+            headers: { "X-CSRFToken": csrftoken },
+            data: $('#regis-form').serialize(),
+            dataType: "json",
+            success: function (data) {
+                setTimeout(location.reload.bind(location), 1000);
+                swal(data,'','success')
+            },
+            error: function (errMsg) {
+               swal("Error",errMsg.responseText,'error')
+
+            },
+          });
+
+    })
+})
+
+
+
+
+</script>
+{% endblock script %}
