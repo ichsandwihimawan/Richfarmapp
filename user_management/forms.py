@@ -17,24 +17,34 @@ class Register_Form(forms.Form):
         "type": "text",
         "class": "input100",
         "placeholder": "Referal code",
+        'onKeyDown': "if(event.keyCode === 32) return false;"
+
     }))
     username = forms.CharField(widget=forms.TextInput(attrs={
         "type": "text",
         "class": "input100",
         "placeholder": "Username",
+        'onKeyDown': "if(event.keyCode === 32) return false;"
+
     }))
     email = forms.EmailField(widget=forms.EmailInput(attrs={
         "type": "email",
         "class": "input100",
         "placeholder": "Email",
+        'onKeyDown': "if(event.keyCode === 32) return false;"
+
     }))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={
         "class": "input100",
         "placeholder": "Password",
+        'onKeyDown': "if(event.keyCode === 32) return false;"
+
     }))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={
         "class": "input100",
         "placeholder": "Re-type Password",
+        'onKeyDown': "if(event.keyCode === 32) return false;"
+
     }))
 
     def clean_username(self):
