@@ -21,6 +21,7 @@ def redirectLanding(request):
     return redirect('register')
 
 urlpatterns = [
+    path('',redirectLanding,name='landing-page'),
     path('admin/', admin.site.urls),
     path('logout/',logoutView,name='logout'),
     path('login/',loginView,name='login'),
