@@ -5,6 +5,6 @@ from .models import *
 from mptt.admin import DraggableMPTTAdmin
 
 # Register your models here.
-admin.site.register(Data_User,DraggableMPTTAdmin)
+admin.site.register(Data_User)
 admin.site.register(Reset_Password)
 
