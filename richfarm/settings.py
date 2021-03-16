@@ -24,8 +24,9 @@ SECRET_KEY = 'qhj&6dbb**$*e0kta!h#oeipf!)61ag5)mcp2ncsl=0^zf&q80'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-DEBUG_PROPAGATE_EXCEPTIONS = True
-ALLOWED_HOSTS = ["*"]
+# DEBUG_PROPAGATE_EXCEPTIONS = True
+SECURE_SSL_REDIRECT = True
+ALLOWED_HOSTS = ["http://localhost:8000","https://richfarm.herokuapp.com","https://richfarm.io"]
 
 
 # Application definition

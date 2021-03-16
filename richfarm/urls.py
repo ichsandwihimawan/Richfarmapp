@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path,include
 from .views import *
 
+def redirectLanding(request):
+    return redirect('register')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('logout/',logoutView,name='logout'),
