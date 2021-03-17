@@ -30,7 +30,7 @@ def registerView(request):
         if form.is_valid():
             new_ref_code = get_random_string(length=6).upper()
             us = User.objects.create_user(username=request.POST.get('username'),
-                                          password=request.POST.get('password'))
+                                          password=request.POST.get('password1'))
             ref_by = Data_User.objects.get(referal_code=request.POST.get('referal_code'))
             def findParent(a):
                 par = a

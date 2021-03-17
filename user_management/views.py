@@ -123,7 +123,7 @@ def registerTree(request):
 
     new_ref_code = get_random_string(length=6).upper()
     us = User.objects.create_user(username=request.data.get('username'),
-                                  password=request.data.get('password'))
+                                  password=request.data.get('password1'))
 
     new_user = Data_User.objects.create(user_rel=us,
                                         parent=parent,
