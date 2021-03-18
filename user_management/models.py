@@ -30,6 +30,7 @@ class Data_User(MPTTModel):
     trx_address = models.CharField(max_length=50,null=True,blank=True)
     doge_address = models.CharField(max_length=50,null=True,blank=True)
     bnb_address = models.CharField(max_length=50,null=True,blank=True)
+    bnb_memo = models.CharField(max_length=50,null=True,blank=True)
     bonus_sponsor = models.FloatField(default=0,null=True,blank=True)
     bonus_pairing = models.FloatField(default=0,null=True,blank=True)
     bonus_roi = models.FloatField(default=0,null=True,blank=True)

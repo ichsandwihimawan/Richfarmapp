@@ -83,11 +83,9 @@ def generateJaringan(user,path):
     dt['node4'] = node4
     dt['node5'] = node5
     dt['node6'] = node6
-
     return dt
 
 def treeView(request,user_id):
-    print(request.POST)
     user = Data_User.objects.get(id=user_id)
     path = request.build_absolute_uri(f"/dashboard/tree/")
     tree = generateJaringan(user,path)
