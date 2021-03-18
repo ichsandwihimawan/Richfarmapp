@@ -26,5 +26,6 @@ urlpatterns = [
     path('logout/',logoutView,name='logout'),
     path('login/',loginView,name='login'),
     path('dashboard/',include('user_management.urls')),
+    path('transaction/',include('transaction.urls')),
     path('register/', registerView,name='register')
 ]

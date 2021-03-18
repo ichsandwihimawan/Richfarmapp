@@ -26,7 +26,6 @@ def registerView(request):
     ref_code = request.GET.get('ref_code',None)
     if Data_User.objects.filter(referal_code = ref_code).exists() == False:
         ref_code = None
-
     form = Register_Form(initial={'referal_code':ref_code})
     if request.method == 'POST':
         form = Register_Form(data=request.POST)

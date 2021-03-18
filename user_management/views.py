@@ -1,9 +1,5 @@
 import re
-
-from django.contrib import messages
-from django.contrib.auth import logout, authenticate, login
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -134,3 +130,4 @@ def registerTree(request):
                                         referal_code=new_ref_code,
                                         )
     return Response("User Berhasil Dibuat")
+
