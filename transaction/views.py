@@ -1,7 +1,8 @@
 from django.shortcuts import render
 
 # Create your views here.
-from rest_framework.decorators import authentication_classes, api_view, permission_classes
+from rest_framework.decorators import authentication_classes, api_view, permission_classes, renderer_classes
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from user_management.models import *
 from .models import *
@@ -10,6 +11,7 @@ from .models import *
 @api_view(['POST'])
 @authentication_classes([])
 @permission_classes([])
+@renderer_classes([JSONRenderer])
 def Deposit_IPN(request):
     print(request.data)
     # merchant_id = '2f4df706e2d6200f97b1fdb3697f8750'
