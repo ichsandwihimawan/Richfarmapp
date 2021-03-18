@@ -26,7 +26,7 @@ SECRET_KEY = 'qhj&6dbb**$*e0kta!h#oeipf!)61ag5)mcp2ncsl=0^zf&q80'
 DEBUG = False
 # DEBUG_PROPAGATE_EXCEPTIONS = True
 SECURE_SSL_REDIRECT = True
-ALLOWED_HOSTS = ["http://localhost:8000","https://richfarm.herokuapp.com","https://richfarm.io"]
+ALLOWED_HOSTS = ["http://localhost:8000","https://richfarm.herokuapp.com","https://richfarm.app"]
 
 
 # Application definition
