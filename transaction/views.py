@@ -45,13 +45,14 @@ def Deposit_IPN(request):
 def investView(request):
     user = request.user.data_user
     nominal = float(request.data.get('paket'))
-
     if user.balance < nominal:
         return Response("Insuficient Balance, Please Deposit",status=status.HTTP_400_BAD_REQUEST)
     if user.invest_set.filter(is_active=True).exists():
         return Response("You still have Active Invest, Please complete it first", status=status.HTTP_400_BAD_REQUEST)
 
     inv = Invest.objects.create(user=user,nominal=nominal,capping=nominal*4)
+    user.balance -= nominal
+    user.save()
 
     if user.referal_by.invest_set.filter(is_active=True).exists():
         refnya = Data_User.objects.filter(id=user.referal_by)
