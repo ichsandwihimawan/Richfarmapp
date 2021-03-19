@@ -51,7 +51,7 @@ def investView(request):
     if user.invest_set.filter(is_active=True).exists():
         return Response("You still have Active Invest, Please complete it first", status=status.HTTP_400_BAD_REQUEST)
 
-    inv = Invest.objects.create(user=user,nominal=nominal)
+    inv = Invest.objects.create(user=user,nominal=nominal,capping=nominal*4)
 
     if user.referal_by.invest_set.filter(is_active=True).exists():
         refnya = Data_User.objects.filter(id=user.referal_by)
