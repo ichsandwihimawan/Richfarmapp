@@ -27,7 +27,7 @@ class Invest(models.Model):
         return f'{self.user} {self.nominal} {"AKTIF" if self.is_active==True else "NONAKTIF"}'
 
 class Bonus_Sponsor(models.Model):
-    for_user = models.ForeignKey(Data_User,on_delete=models.CASCADE)
+    for_user = models.ForeignKey(Data_User,on_delete=models.CASCADE,null=True,blank=True)
     user_invest= models.ForeignKey(Invest,on_delete=models.CASCADE)
     nominal = models.FloatField(default=0,blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
