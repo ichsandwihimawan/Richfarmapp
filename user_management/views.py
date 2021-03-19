@@ -1,14 +1,27 @@
+import json
 import re
+
+from django.db.models import Sum
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .coin_payment import CryptoPayments
 
 from .models import *
+from transaction.models import *
+
 
 def dashboardView(request):
+    user  = request.user.data_user
 
-    return render(request,'dashboard/index.html')
+    context = {
+        'balance': user.balance,
+        'invest': user.invest_set.get(is_active=True).nominal if user.invest_set.filter(is_active=True).exists() else 0,
+        'total_bonus':user.total_bonus,
+        'capping': user.invest_set.get(is_active=True).capping if user.invest_set.filter(is_active=True).exists() else 0,
+    }
+    return render(request,'dashboard/index.html',context)
 
 def profileView(request):
 
@@ -99,25 +112,61 @@ def treeView(request,user_id):
 
 @api_view(['POST'])
 def registerTree(request):
+    API_KEY = 'f194487ef92fa5f956bf7e6325ec99215f746a3e13ddcffeb3efc05c6745dc2c'
+    API_SECRET = 'ceD85F90fd4dBE324734167f57F323f978a2134e0dEFebe0aa7b52Fa9Ef8549B'
+    IPN_URL = 'https://richfarm.app/transaction/ipn-depo/'
+    client = CryptoPayments(API_KEY, API_SECRET, IPN_URL)
+
     ref_by = request.user.data_user
     parent = Data_User.objects.get(id=request.data.get('parent_id'))
 
     if User.objects.filter(username__iexact=request.data.get('username')).exists():
-        return Response("Username sudah digunakan",status=status.HTTP_400_BAD_REQUEST)
+        return Response("Username already exists",status=status.HTTP_400_BAD_REQUEST)
     if Data_User.objects.filter(email__iexact=request.data.get('email')).exists():
-        return Response("Email sudah digunakan",status=status.HTTP_400_BAD_REQUEST)
+        return Response("Email already exists",status=status.HTTP_400_BAD_REQUEST)
     if re.search('[A-Z]', request.data.get('password1')) == None \
             or re.search('[0-9]', request.data.get('password1')) == None \
             or re.search('[^A-Za-z0-9]', request.data.get('password1')) == None or len(request.data.get('password1')) < 8:
-        return Response("Password Harus mengandung 1 Huruf Besar, 1 Angka, dan 1 Symbol. Minimal 8 Karakter",status=status.HTTP_400_BAD_REQUEST)
+        return Response("Password must contain 1 Uppercase, 1 Number, and 1 Symbol. Minimum 8 Character",status=status.HTTP_400_BAD_REQUEST)
     if request.data.get('password1') != request.data.get('password2'):
-        return Response('Pasword Tidak Sesuai', status=status.HTTP_400_BAD_REQUEST)
+        return Response('Pasword doesnt match', status=status.HTTP_400_BAD_REQUEST)
     if parent.get_children().filter(position=request.data.get('position')).exists():
-        return Response("Posisi Telah Di isi orang lain, Silahkan refresh ulang halaman anda",status=status.HTTP_400_BAD_REQUEST)
+        return Response("Posisi already placed by someone, Please refresh this page",status=status.HTTP_400_BAD_REQUEST)
 
     new_ref_code = get_random_string(length=6).upper()
     us = User.objects.create_user(username=request.data.get('username'),
                                   password=request.data.get('password1'))
+    coin = ['DOGE','TRX','BNB']
+    addr_doge = ''
+    addr_trx = ''
+    addr_bnb = ''
+    memo_bnb = ''
+    for x in coin:
+        if x == 'BNB':
+            post_params = {
+                'currency': x,
+                'label': request.data.get('username'),
+                'ipn_url': IPN_URL
+            }
+            address = client.getCallbackAddress(post_params)
+            addr_bnb = json.loads(address.decode('utf-8'))['result']['address']
+            memo_bnb = json.loads(address.decode('utf-8'))['result']['dest_tag']
+        elif x == 'DOGE':
+            post_params = {
+                'currency': x,
+                'label': request.data.get('username'),
+                'ipn_url': IPN_URL
+            }
+            address = client.getCallbackAddress(post_params)
+            addr_doge = json.loads(address.decode('utf-8'))['result']['address']
+        elif x == 'TRX':
+            post_params = {
+                'currency': x,
+                'label': request.data.get('username'),
+                'ipn_url': IPN_URL
+            }
+            address = client.getCallbackAddress(post_params)
+            addr_trx = json.loads(address.decode('utf-8'))['result']['address']
 
     new_user = Data_User.objects.create(user_rel=us,
                                         parent=parent,
@@ -126,6 +175,12 @@ def registerTree(request):
                                         email=request.data.get('email'),
                                         position=request.data.get('position'),
                                         referal_code=new_ref_code,
+                                        trx_address=addr_trx,
+                                        doge_address=addr_doge,
+                                        bnb_address = addr_bnb,
+                                        bnb_memo = memo_bnb,
                                         )
-    return Response("User Berhasil Dibuat")
+    return Response("User Created Successfuly")
+
+
 

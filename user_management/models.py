@@ -20,7 +20,7 @@ class Data_User(MPTTModel):
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_rel = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-    role = models.ForeignKey(Role,on_delete=models.SET_NULL,null=True)
+    role = models.ForeignKey(Role,on_delete=models.SET_NULL,null=True,default=1)
     name = models.CharField(max_length=100,null=True, blank=True)
     email = models.EmailField(max_length=50, null=True,blank=True)
     position = models.CharField(max_length=1,null=True,blank=True,choices=pos)
@@ -31,9 +31,7 @@ class Data_User(MPTTModel):
     doge_address = models.CharField(max_length=50,null=True,blank=True)
     bnb_address = models.CharField(max_length=50,null=True,blank=True)
     bnb_memo = models.CharField(max_length=50,null=True,blank=True)
-    bonus_sponsor = models.FloatField(default=0,null=True,blank=True)
-    bonus_pairing = models.FloatField(default=0,null=True,blank=True)
-    bonus_roi = models.FloatField(default=0,null=True,blank=True)
+    total_bonus = models.FloatField(null=True,blank=True,default=0)
 
     def __str__(self):
         return f'{self.user_rel.username}'

@@ -1,5 +1,6 @@
 {% extends "dashboard/snippets/base.html" %}
 {% load static%}
+{% load humanize %}
 {% block  style %}
 <link rel="stylesheet" href="{% static 'dashboard/css/css/newstyle.css' %}"/>
 <link rel="stylesheet" href="{% static 'dashboard/css/css/main.css' %}"/>
@@ -32,6 +33,7 @@
     >
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
     </div>
+    <input type="hidden" id="temp-usdt" value="0">
 
     <!-- Content Row -->
     <div class="row">
@@ -47,7 +49,7 @@
                                 Deposit
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                $40,000
+                                ${{balance|floatformat:"2"|intcomma}}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -70,7 +72,7 @@
                                 Invest
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                $215,000
+                                ${{invest|floatformat:"2"|intcomma}}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -93,7 +95,7 @@
                                 Bonus
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                $215,000
+                                ${{total_bonus|floatformat:"2"|intcomma}}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -116,7 +118,7 @@
                                 Capping
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                $215,000
+                                ${{capping|floatformat:"2"|intcomma}}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -131,7 +133,7 @@
     <!-- Content Row -->
 
     <div class="row">
-        <div class="col-6">
+        <div class="col-xl-6 col-md-6">
             <div class="card">
                 <div class="card-body">
                     <div class="accordion" id="accordionExample">
@@ -171,88 +173,54 @@
                                     data-parent="#accordionExample"
                                     style="margin-top: 50px"
                             >
-                                <h5>Nominal</h5>
-                                <input
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="Minimum $50"
-                                />
-                                <br/>
 
                                 <div class="row justify-content-center">
-                                    <div class="col-4">
-                                        <img
-                                                src="{% static 'dashboard/img/binance-coin-bnb-logo.png' %}"
-                                                style="width: 50px"
-                                                alt=""
-                                        />
-                                        <br/>
-                                        <div class="form-check form-check-primary">
-                                            <input
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    name="Primary"
-                                                    id="Primary"
-                                                    checked
+                                    <div class="col-4-md col-12 text-center mb-4">
+                                        <a href="#" data-toggle="modal" data-target="#bnb-modal">
+                                            <img
+                                                    src="{% static 'dashboard/img/binance-coin-bnb-logo.png' %}"
+                                                    style="width: 50px"
+                                                    alt=""
                                             />
-                                            <label class="form-check-label" for="Primary">
-                                                BNB
-                                            </label>
-                                        </div>
+                                        </a>
+                                        <br/>
+
+                                        <label class="form-check-label mt-2">
+                                            BNB
+                                        </label>
                                     </div>
 
-                                    <div class="col-4">
-                                        <img
-                                                src="{% static 'dashboard/img/tron-trx-logo.png' %}"
-                                                style="width: 50px"
-                                                alt=""
-                                        />
-                                        <br/>
-                                        <div class="form-check form-check-primary">
-                                            <input
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    name="Primary"
-                                                    id="Primary"
-                                                    checked
+                                    <div class="col-4-md col-12 text-center mb-4">
+                                        <a href="#" data-toggle="modal" data-target="#tron-modal">
+                                            <img
+                                                    src="{% static 'dashboard/img/tron-trx-logo.png' %}"
+                                                    style="width: 50px"
+                                                    alt=""
                                             />
-                                            <label class="form-check-label" for="Primary">
-                                                TRON
-                                            </label>
-                                        </div>
+                                        </a>
+                                        <br/>
+
+                                        <label class="form-check-label mt-2">
+                                            TRON
+                                        </label>
                                     </div>
 
-                                    <div class="col-4">
-                                        <img
-                                                src="{% static 'dashboard/img/dogecoin-doge-logo (1).png' %}"
-                                                style="width: 50px"
-                                                alt=""
-                                        />
-                                        <br/>
-                                        <div class="form-check form-check-primary">
-                                            <input
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    name="Primary"
-                                                    id="Primary"
-                                                    checked
+                                    <div class="col-4-md col-12 text-center">
+                                        <a href="#" data-toggle="modal" data-target="#doge-modal">
+                                            <img
+                                                    src="{% static 'dashboard/img/dogecoin-doge-logo (1).png' %}"
+                                                    style="width: 50px"
+                                                    alt=""
                                             />
-                                            <label class="form-check-label" for="Primary">
-                                                DOGE
-                                            </label>
-                                        </div>
+                                        </a>
+                                        <br/>
+
+                                        <label class="form-check-label mt-2">
+                                            DOGE
+                                        </label>
                                     </div>
                                 </div>
-
                                 <br/>
-
-                                <input
-                                        type="checkbox"
-                                        style="padding: 50px !important"
-                                /><label for="agree1" style="margin-left: 5px">
-                                agree to term and services</label
-                            >
-                                <button class="btn btn-lg btn-block">Submit</button>
                             </div>
                         </div>
                     </div>
@@ -260,7 +228,7 @@
             </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-xl-6 col-md-6">
             <div class="card">
                 <div class="card-body">
                     <div class="accordion" id="accordionExample1">
@@ -286,166 +254,214 @@
                                     data-bs-parent="#accordionExample1"
                                     style="margin-top: 50px"
                             >
-                                <h6>Package</h6>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="form-check">
-                                            <input
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    value=""
-                                                    id="flexCheckDefault"
-                                            />
-                                            <label
-                                                    class="form-check-label"
-                                                    for="flexCheckDefault"
-                                                    style="
-                                    font-size: 20px;
-                                    font-weight: 600;
-                                    color: black;
-                                  "
-                                            >$ 50</label
-                                            >
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    value=""
-                                                    id="flexCheckDefault"
-                                            />
-                                            <label
-                                                    class="form-check-label"
-                                                    for="flexCheckDefault"
-                                                    style="
-                                    font-size: 20px;
-                                    font-weight: 600;
-                                    color: black;
-                                  "
-                                            >$ 100</label
-                                            >
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    value=""
-                                                    id="flexCheckDefault"
-                                            />
-                                            <label
-                                                    class="form-check-label"
-                                                    for="flexCheckDefault"
-                                                    style="
-                                    font-size: 20px;
-                                    font-weight: 600;
-                                    color: black;
-                                  "
-                                            >$ 500</label
-                                            >
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    value=""
-                                                    id="flexCheckDefault"
-                                            />
-                                            <label
-                                                    class="form-check-label"
-                                                    for="flexCheckDefault"
-                                                    style="
-                                    font-size: 20px;
-                                    font-weight: 600;
-                                    color: black;
-                                  "
-                                            >$ 1000</label
-                                            >
-                                        </div>
-                                    </div>
-
-                                    <div class="col-6">
-                                        <div class="form-check">
-                                            <input
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    value=""
-                                                    id="flexCheckDefault"
-                                            />
-                                            <label
-                                                    class="form-check-label"
-                                                    for="flexCheckDefault"
-                                                    style="
-                                    font-size: 20px;
-                                    font-weight: 600;
-                                    color: black;
-                                  "
-                                            >$ 5000</label
-                                            >
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    value=""
-                                                    id="flexCheckDefault"
-                                            />
-                                            <label
-                                                    class="form-check-label"
-                                                    for="flexCheckDefault"
-                                                    style="
-                                    font-size: 20px;
-                                    font-weight: 600;
-                                    color: black;
-                                  "
-                                            >$ 10000</label
-                                            >
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    value=""
-                                                    id="flexCheckDefault"
-                                            />
-                                            <label
-                                                    class="form-check-label"
-                                                    for="flexCheckDefault"
-                                                    style="
-                                    font-size: 20px;
-                                    font-weight: 600;
-                                    color: black;
-                                  "
-                                            >$ 50000</label
-                                            >
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    value=""
-                                                    id="flexCheckDefault"
-                                            />
-                                            <label
-                                                    class="form-check-label"
-                                                    for="flexCheckDefault"
-                                                    style="
-                                    font-size: 20px;
-                                    font-weight: 600;
-                                    color: black;
-                                  "
-                                            >$ 100000</label
-                                            >
-                                        </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-12-md mb-4">
+                                        <h2><b>Package</b></h2>
                                     </div>
                                 </div>
+                                <form method="post" id="paket-form">
+                                    {% csrf_token %}
+                                    <div class="row text-center justify-content-center">
+                                        <div class="col-5">
+                                            <div class="form-check mb-4">
+                                                <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        value="50"
+                                                        name="paket"
+                                                        id="paket1"
+                                                        required
+                                                />
+                                                <label
+                                                        class="form-check-label"
+                                                        for="paket1"
+                                                        style="
+                                    font-size: 1em;
+                                    font-weight: 600;
+                                    color: black;
+                                  "
+                                                >$ 50</label
+                                                >
+                                            </div>
 
-                                <button class="btn btn-lg btn-block">Submit</button>
+                                            <div class="form-check mb-4">
+                                                <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        value="100"
+                                                        name="paket"
+                                                        id="paket2"
+                                                        required
+                                                />
+                                                <label
+                                                        class="form-check-label"
+                                                        for="paket2"
+                                                        style="
+                                    font-size: 1em;
+                                    font-weight: 600;
+                                    color: black;
+                                  "
+                                                >$ 100</label
+                                                >
+                                            </div>
+
+                                            <div class="form-check mb-4">
+                                                <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        value="500"
+                                                        name="paket"
+                                                        id="paket3"
+                                                        required
+                                                />
+                                                <label
+                                                        class="form-check-label"
+                                                        for="paket3"
+                                                        style="
+                                    font-size: 1em;
+                                    font-weight: 600;
+                                    color: black;
+                                  "
+                                                >$ 500</label
+                                                >
+                                            </div>
+
+                                            <div class="form-check mb-4">
+                                                <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        value="1000"
+                                                        name="paket"
+                                                        id="paket4"
+                                                        required
+                                                />
+                                                <label
+                                                        class="form-check-label"
+                                                        for="paket4"
+                                                        style="
+                                    font-size: 1em;
+                                    font-weight: 600;
+                                    color: black;
+                                  "
+                                                >$ 1000</label
+                                                >
+                                            </div>
+                                        </div>
+
+                                        <div class="col-5">
+                                            <div class="form-check mb-4">
+                                                <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        value="5000"
+                                                        name="paket"
+                                                        id="paket5"
+                                                        required
+                                                />
+                                                <label
+                                                        class="form-check-label"
+                                                        for="paket5"
+                                                        style="
+                                    font-size: 1em;
+                                    font-weight: 600;
+                                    color: black;
+                                  "
+                                                >$ 5000</label
+                                                >
+                                            </div>
+
+                                            <div class="form-check mb-4">
+                                                <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        value="10000"
+                                                        name="paket"
+                                                        id="paket6"
+                                                        required
+                                                />
+                                                <label
+                                                        class="form-check-label"
+                                                        for="paket6"
+                                                        style="
+                                    font-size: 1em;
+                                    font-weight: 600;
+                                    color: black;
+                                  "
+                                                >$ 10000</label
+                                                >
+                                            </div>
+
+                                            <div class="form-check mb-4">
+                                                <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        value="50000"
+                                                        name="paket"
+                                                        id="paket7"
+                                                        required
+                                                />
+                                                <label
+                                                        class="form-check-label"
+                                                        for="paket7"
+                                                        style="
+                                    font-size: 1em;
+                                    font-weight: 600;
+                                    color: black;
+                                  "
+                                                >$ 50000</label
+                                                >
+                                            </div>
+
+                                            <div class="form-check">
+                                                <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        value="100000"
+                                                        name="paket"
+                                                        id="paket8"
+                                                        required
+                                                />
+                                                <label
+                                                        class="form-check-label"
+                                                        for="paket8"
+                                                        style="
+                                    font-size: 1em;
+                                    font-weight: 600;
+                                    color: black;
+                                  "
+                                                >$ 100000</label
+                                                >
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <a href="#" class="btn btn-lg btn-block" id="btn-sub">
+                                        Submit
+                                    </a>
+                                    <div class="modal" tabindex="-1" role="dialog" id="paket-modal">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">BUY PACKAGE</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure want to buy this package ?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" id="buy-btn" class="btn btn-primary">BUY</button>
+                                                    <button type="button" class="btn btn-secondary bg-danger"
+                                                            data-dismiss="modal">Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
                             </div>
                         </div>
                     </div>
@@ -457,6 +473,162 @@
     <!-- Content Row -->
 </div>
 {% endblock content %}
+{% block  modal %}
+<div class="modal fade" id="bnb-modal" tabindex="-1" role="dialog" aria-labelledby="register"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center">
+                    <div class="col-12 mb-2">
+                        <img
+                                src="{% static 'dashboard/img/binance-coin-bnb-logo.png' %}"
+                                style="width: 50px"
+                                alt=""
+                        />
+                    </div>
+                    <div class="col-12">
+                        <input type="hidden" id="temp-bnb" value="0">
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-8">
+                        <div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30" style="width:100%">
+                            <div
+                                    class="wrap-input100 validate-input m-b-20"
+                                    data-validate="Enter Amount "
+                            >
+                                <input type="number" min="0" name="name" class="input100" placeholder="Enter Amount"
+                                       required
+                                       id="bnb-input" value="0">
+                                <span class="focus-input100"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-center">
+                    <div class="col-8 text-center">
+                        <h6>You need To Transfer </h6>
+                        <h4 style="font-size:1em"><b><span id="bnb-amt">0</span> BNB</b></h4>
+                        <h6>To this Address Wallet</h6>
+                        <h4 style="font-size:1em"><b><span id="address-bnb">KASukuu98ySDUGu997g79SDG897</span></b></h4>
+                        <h6>Memo</h6>
+                        <h4 style="font-size:1em"><b><span id="memo-bnb">sdggsd87sdga</span></b></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="tron-modal" tabindex="-1" role="dialog" aria-labelledby="register"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center">
+                    <div class="col-12 mb-2">
+                        <img
+                                src="{% static 'dashboard/img/tron-trx-logo.png' %}"
+                                style="width: 50px"
+                                alt=""
+                        />
+                    </div>
+                    <div class="col-12">
+                        <input type="hidden" id="temp-tron" value="0">
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-8">
+                        <div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30" style="width:100%">
+                            <div
+                                    class="wrap-input100 validate-input m-b-20"
+                                    data-validate="Enter Amount "
+                            >
+                                <input type="number" min="0" name="name" class="input100" placeholder="Enter Amount"
+                                       required
+                                       id="tron-input" value="0">
+                                <span class="focus-input100"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-center">
+                    <div class="col-8 text-center">
+                        <h6>You need To Transfer </h6>
+                        <h4 style="font-size:1em"><b><span id="tron-amt">0</span> TRX</b></h4>
+                        <h6>To this Address Wallet</h6>
+                        <h4 style="font-size:1em"><b><span id="address-tron">KASukuu98ySDUGu997g79SDG897</span></b></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="doge-modal" tabindex="-1" role="dialog" aria-labelledby="register"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center">
+                    <div class="col-12 mb-2">
+                        <img
+                                src="{% static 'dashboard/img/dogecoin-doge-logo (1).png' %}"
+                                style="width: 50px"
+                                alt=""
+                        />
+                    </div>
+                    <div class="col-12">
+                        <input type="hidden" id="temp-doge" value="0">
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-8">
+                        <div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30" style="width:100%">
+                            <div
+                                    class="wrap-input100 validate-input m-b-20"
+                                    data-validate="Enter Amount "
+                            >
+                                <input type="number" min="0" name="name" class="input100" placeholder="Enter Amount"
+                                       required
+                                       id="doge-input" value="0">
+                                <span class="focus-input100"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-center">
+                    <div class="col-8 text-center">
+                        <h6>You need To Transfer </h6>
+                        <h4 style="font-size:1em"><b><span id="doge-amt">0</span> DOGE</b></h4>
+                        <h6>To this Address Wallet</h6>
+                        <h4 style="font-size:1em"><b><span id="address-doge">KASukuu98ySDUGu997g79SDG897</span></b></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
 
 {% block  script %}
 <script src="{% static 'dashboard/vendor/jquery/jquery.min.js' %}"></script>
@@ -467,5 +639,189 @@
 
 <!-- Custom scripts for all pages-->
 <script src="{% static 'dashboard/js/sb-admin-2.min.js' %}"></script>
+<script src="{% static 'sweetalert.min.js' %}"></script>
+<script>
+var bnb = 'https://indodax.com/api/ticker/bnbidr'
+var usdt = 'https://indodax.com/api/ticker/usdtidr'
+var tron = 'https://indodax.com/api/ticker/trxidr'
+var doge = 'https://indodax.com/api/ticker/dogeidr'
+var harga_usdt
+var harga_bnb
+var harga_tron
+var harga_doge
+
+fetch(usdt)
+    .then((res) => res.json())
+    .then(function(data) {
+        console.log(data.ticker.last)
+        harga_usdt = data.ticker.last
+        $('#temp-usdt').val(data.ticker.last)
+    })
+    .catch(function(err) {
+        console.log(err)
+    });
+
+fetch(bnb)
+    .then((res) => res.json())
+    .then(function(data) {
+        harga_bnb = data.ticker.last/harga_usdt
+        $('#temp-bnb').val(data.ticker.last)
+    })
+    .catch(function(err) {
+        console.log(err)
+    });
+
+fetch(doge)
+    .then((res) => res.json())
+    .then(function(data) {
+        harga_doge = data.ticker.last/harga_usdt
+        $('#temp-doge').val(data.ticker.last)
+
+    })
+    .catch(function(err) {
+        console.log(err)
+    });
+fetch(tron)
+    .then((res) => res.json())
+    .then(function(data) {
+        harga_tron = data.ticker.last/harga_usdt
+        $('#temp-tron').val(data.ticker.last)
+    })
+    .catch(function(err) {
+        console.log(err)
+    });
+
+
+
+setInterval(function(){
+
+fetch(usdt)
+    .then((res) => res.json())
+    .then(function(data) {
+        harga_usdt = data.ticker.last
+        $('#temp-usdt').val(data.ticker.last)
+    })
+    .catch(function(err) {
+        console.log(err)
+    });
+
+fetch(bnb)
+    .then((res) => res.json())
+    .then(function(data) {
+        var harga_bnb = data.ticker.last / harga_usdt
+        var bnb_val = $('#bnb-input').val()
+        var hasil_bnb = bnb_val/harga_bnb
+        $('#bnb-amt').html(parseFloat(hasil_bnb + (hasil_bnb * 0.02)).toFixed(4).toLocaleString())
+        $('#temp-bnb').val(data.ticker.last)
+
+    })
+    .catch(function(err) {
+        console.log(err)
+    });
+
+fetch(doge)
+    .then((res) => res.json())
+    .then(function(data) {
+        var harga_doge = data.ticker.last / harga_usdt
+        var doge_val = $('#doge-input').val()
+        var hasil_doge = doge_val / harga_doge
+        $('#doge-amt').html(parseFloat(hasil_doge + (hasil_doge * 0.02)).toFixed(0).toLocaleString())
+        $('#temp-doge').val(data.ticker.last)
+    })
+    .catch(function(err) {
+        console.log(err)
+    });
+
+fetch(tron)
+    .then((res) => res.json())
+    .then(function(data) {
+        var harga_tron = data.ticker.last / harga_usdt
+        var tron_val = $('#tron-input').val()
+        var hasil_tron = tron_val / harga_tron
+        $('#tron-amt').html(parseFloat(hasil_tron + (hasil_tron * 0.02)).toFixed(0).toLocaleString())
+        $('#temp-tron').val(data.ticker.last)
+    })
+    .catch(function(err) {
+        console.log(err)
+    });
+
+},120000)
+
+$('#bnb-input').keyup(function(){
+    var bnb_val = $(this).val()
+    var hasil_bnb = bnb_val/harga_bnb
+    $('#bnb-amt').html(parseFloat(hasil_bnb + (hasil_bnb * 0.02)).toFixed(4).toLocaleString())
+
+})
+
+$('#doge-input').keyup(function(){
+    var doge_val = $(this).val()
+    var hasil_doge = doge_val/harga_doge
+    $('#doge-amt').html(parseFloat(hasil_doge + (hasil_doge * 0.02)).toFixed(0).toLocaleString())
+
+})
+
+$('#tron-input').keyup(function(){
+    var tron_val = $(this).val()
+    var hasil_tron = tron_val/harga_tron
+    $('#tron-amt').html(parseFloat(hasil_tron + (hasil_tron * 0.02)).toFixed(0).toLocaleString())
+
+})
+
+$('#btn-sub').click(function(){
+    if(!$('input[type="radio"]').is(":checked"))
+    {
+        return swal("Error","Please Check one from the package",'error')
+    }
+    else{
+        $('#paket-modal').modal()
+    }
+})
+
+var base_url = window.location.origin
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+$("#buy-btn").click(function(){
+ $.ajax({
+    type: "POST",
+    url: base_url + "/transaction/invest/",
+    headers: { "X-CSRFToken": csrftoken },
+    data: $('#paket-form').serialize(),
+    dataType: "json",
+    success: function (data) {
+        $('#paket-modal').modal('hide')
+        setTimeout(location.reload.bind(location), 2000);
+        swal(data,'','success')
+    },
+    error: function (errMsg) {
+        $('#paket-modal').modal('hide')
+       swal("Error",errMsg.responseText,'error')
+
+    },
+  });
+
+})
+
+
+
+
+
+
+</script>
 
 {% endblock script %}

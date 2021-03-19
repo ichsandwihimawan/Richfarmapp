@@ -223,16 +223,3 @@ class CryptoPayments():
         return self.Request('post', **params)
 
 
-API_KEY     = 'f194487ef92fa5f956bf7e6325ec99215f746a3e13ddcffeb3efc05c6745dc2c'
-API_SECRET  = 'ceD85F90fd4dBE324734167f57F323f978a2134e0dEFebe0aa7b52Fa9Ef8549B'
-IPN_URL = 'https://richfarm.app/transaction/ipn-depo/'
-client = CryptoPayments(API_KEY, API_SECRET, IPN_URL)
-
-post_params = {
-            'currency': 'BNB',
-            'label': 'testing',
-            'ipn_url': IPN_URL
-        }
-address = client.getCallbackAddress(post_params)
-# decode_addres = json.loads(address.decode('utf-8'))['result']['address']
-print(address)
