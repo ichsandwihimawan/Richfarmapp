@@ -54,12 +54,12 @@ def investView(request):
     user.balance -= nominal
     user.save()
 
-    if user.referal_by.invest_set.filter(is_active=True).exists():
+    if user.referal_by.invest_set.filter(is_active=True).exists() and user.role.role == 'user':
         refnya = Data_User.objects.filter(id=user.referal_by.id)
-        Bonus_Sponsor.objects.create(user_invest=inv,nominal=nominal*0.1,for_user=refnya.first())
-        refnya.update(total_bonus=F('total_bonus')+nominal*0.1,)
+        Bonus_Sponsor.objects.create(user_invest=inv,nominal=nominal*0.15,for_user=refnya.first())
+        refnya.update(total_bonus=F('total_bonus')+nominal*0.15,)
         refnya_invest = refnya.first()
-        refnya_invest.invest_set.filter(is_active=True).update(capping=F('capping') - nominal * 0.1)
+        refnya_invest.invest_set.filter(is_active=True).update(capping=F('capping') - nominal * 0.15)
 
     return Response('Invest Successfully, Please Enjoy your profit')
 
