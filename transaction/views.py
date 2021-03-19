@@ -55,7 +55,7 @@ def investView(request):
     user.save()
 
     if user.referal_by.invest_set.filter(is_active=True).exists():
-        refnya = Data_User.objects.filter(id=user.referal_by)
+        refnya = Data_User.objects.filter(id=user.referal_by.id)
         Bonus_Sponsor.objects.create(user_invest=inv,nominal=nominal*0.1,for_user=refnya.first())
         refnya.update(total_bonus=F('total_bonus')+nominal*0.1,)
         refnya_invest = refnya.first()
