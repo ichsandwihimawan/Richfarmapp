@@ -5,7 +5,7 @@ class Command(BaseCommand):
     help = 'Displays current time'
 
     def handle(self, *args, **kwargs):
-        all_invest =  Invest.objects.filter(is_active=True)
+        all_invest =  Invest.objects.filter(is_active=True,user__role__role='user')
         roi = Roi_Percentage.objects.first().persenan / 100
 
         for x in all_invest:
