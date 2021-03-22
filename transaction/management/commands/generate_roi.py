@@ -2,14 +2,16 @@ from django.core.management.base import BaseCommand
 from django.db.models import F
 from transaction.models import *
 class Command(BaseCommand):
-    help = 'Displays current time'
+    help = 'generate_roi'
 
     def handle(self, *args, **kwargs):
         all_invest =  Invest.objects.filter(is_active=True,user__role__role='user')
         roi = Roi_Percentage.objects.first().persenan / 100
-
+        print(roi,'roinya')
         for x in all_invest:
             bonus = x.nominal * roi
+            print(bonus)
+            print(x.capping - bonus)
             if x.capping - bonus > 0 :
                 Bonus_Roi.objects.create(user_invest=x,roi=bonus)
                 inv =Invest.objects.filter(id=x.id)
