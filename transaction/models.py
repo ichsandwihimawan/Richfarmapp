@@ -54,6 +54,7 @@ class Bonus_Pairing(models.Model):
 class Bonus_Roi(models.Model):
     user_invest = models.ForeignKey(Invest,on_delete=models.CASCADE)
     roi = models.FloatField(null=True,blank=True)
+    matching = models.FloatField(null=True,blank=True,default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

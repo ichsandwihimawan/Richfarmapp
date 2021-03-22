@@ -78,7 +78,7 @@ def registerView(request):
                     }
                     address = client.getCallbackAddress(post_params)
                     addr_trx = json.loads(address.decode('utf-8'))['result']['address']
-
+            role_user = Role.objects.get(role='user')
             new_user = Data_User.objects.create(user_rel=us,
                                      parent=parent,
                                      referal_by=ref_by,
@@ -90,7 +90,8 @@ def registerView(request):
                                      doge_address=addr_doge,
                                      bnb_address=addr_bnb,
                                      bnb_memo=memo_bnb,
-                                     )
+                                     role=role_user
+                                    )
             messages.success(request,"Registration Successfully, Please login")
             return redirect('login')
     context = {
