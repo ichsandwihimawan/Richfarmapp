@@ -7,6 +7,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         all_invest =  Invest.objects.filter(is_active=True,user__role__role='user')
         roi = Roi_Percentage.objects.first().persenan / 100
+        print(all_invest)
         print(roi,'roinya')
         for x in all_invest:
             bonus = x.nominal * roi
